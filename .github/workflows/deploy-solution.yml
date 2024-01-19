@@ -1,0 +1,26 @@
+name: Deploy VSCodeP
+
+on:
+  workflow_run:
+    workflows: ["Pack VSCodeP"]
+    branches: [main]
+    types:
+      - completed
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: windows-latest
+    environment: production
+    steps:
+      - uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: pack-solution.yml
+          name: packed-solution
+      - uses: microsoft/powerplatform-actions/import-solution@v0
+        with:
+          environment-url: https://org470a41ee.crm.dynamics.com
+          app-id: ad3c9902-bbff-4a8b-a49e-6dcafc6f75ff
+          tenant-id: 37fa3896-ab21-45ee-8635-a2f8aec09f86
+          client-secret : -QC8Q~k0ySsgBhl2Pd_pRDJI6m1jqkOcPID_dc.e 
+          solution-file: VSCodeP_managed.zip
